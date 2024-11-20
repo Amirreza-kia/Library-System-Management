@@ -30,9 +30,10 @@ public class SubjectsRepositoryImpl implements SubjectsRepository {
     @Override
     public void delete(Long id) {
         EntityManager em = EntityManagerProvider.getEntityManager();
+        Subjects obj = em.find(Subjects.class, id);
         try {
             em.getTransaction().begin();
-            em.remove(em.find(Subjects.class, id));
+            em.remove(obj);
             em.getTransaction().commit();
         }catch (Exception e) {
             em.getTransaction().rollback();

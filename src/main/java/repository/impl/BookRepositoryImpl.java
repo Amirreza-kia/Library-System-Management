@@ -3,10 +3,14 @@ package repository.impl;
 import model.Book;
 import model.Subjects;
 import repository.BookRepository;
+import util.ApplicationContext;
 import util.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +22,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        return EntityManagerProvider.getEntityManager().createQuery("SELECT b FROM Book b ", Book.class).getResultList();
+        CriteriaBuilder cb = EntityManagerProvider.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Book> cq = cb.createQuery(Book.class);
+        Root<Book> root = cq.from(Book.class);
+        cq.select(root);
+        return EntityManagerProvider.getEntityManager().createQuery(cq).getResultList();
     }
 
     @Override
@@ -73,19 +81,27 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void deleteByFKey(Long fKey) {
         EntityManager em = EntityManagerProvider.getEntityManager();
-        TypedQuery<Book> query1 = em.createQuery("SELECT b FROM Book b WHERE subjects.id = ?1", Book.class);
-        query1.setParameter(1,fKey);
-        Book books = query1.getSingleResult();
-        try {
-            em.getTransaction().begin();
-            em.remove(books);
-            em.getTransaction().commit();
-
-        }catch (Exception e) {
-            em.getTransaction().rollback();
-        }finally {
-            em.close();
+        TypedQuery<Book> query = EntityManagerProvider.getEntityManager().createNamedQuery("replaceFkKey", Book.class);
+        List<Book> bookList = query.getResultList();
+        for (Book book : bookList) {
+            try {
+                em.getTransaction().begin();
+                query.setParameter(1, fKey);
+                book.getSubjects().setId(0L);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+            } finally {
+                em.close();
+            }
         }
 
+
+    }
+
+    //another way find in service
+    @Override
+    public List<Book> findAllBookWithSubject(Long subjectId) {
+        return EntityManagerProvider.getEntityManager().createQuery("SELECT b FROM Book B WHERE subjects.id = ?1", Book.class).getResultList();
     }
 }

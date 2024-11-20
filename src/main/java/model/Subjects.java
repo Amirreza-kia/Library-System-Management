@@ -2,6 +2,7 @@ package model;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -17,9 +18,7 @@ public class Subjects extends BaseModel{
     @Column(unique=true)
     String name;
 
-
-
-    @OneToMany(mappedBy = "subjects")
+    @OneToMany(mappedBy = "subjects",cascade = CascadeType.REMOVE)
     private List<Book> books = new ArrayList<>();
 
 

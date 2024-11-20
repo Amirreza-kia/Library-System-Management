@@ -64,4 +64,11 @@ public class UsersServiceImpl implements UsersService {
             ApplicationContext.usersRepository.saveOrUpdate(user);
         }else System.out.println("User not found");
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (ApplicationContext.usersRepository.findById(id).isPresent()) {
+            ApplicationContext.usersRepository.delete(id);
+        }else System.out.println("User not found");
+    }
 }

@@ -32,6 +32,7 @@ public class ApplicationContext {
             "SEE ALL BOOK🩸",
             "SEE ALL USERS🩸",
             "SEE ALL USERS ADDRESS🩸😈",
+            "FIND BOOK WHIT SUBJECT🩸😈",
              "BACK TO LAST MENU🩸"};
     public static final String[] USER_MENU_ITEM = {"TAKE BOOK🩸😈", "SEE ALL BOOK🩸","BACK TO LAST MENU🩸"};
 

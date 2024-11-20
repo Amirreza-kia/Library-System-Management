@@ -22,7 +22,7 @@ public class Menu {
 
     public static void loginMenu() {
         String username = Util.getStringInput("Enter Username : ");
-        String password = Util.getStringInput("enter Password : ");
+        String password = Util.getStringInput("ٍEnter Password : ");
         try {
             UserType userType = ApplicationContext.usersService.login(username, password);
             switch (userType) {
@@ -75,7 +75,7 @@ public class Menu {
             case 7://7 DELETE USERS❤️
                 Printer.printAllUsers();
                 Long idUser = (long) Util.getIntInput("Enter ID User To Delete : ");
-                ApplicationContext.usersRepository.delete(idUser);
+                ApplicationContext.usersService.deleteUser(idUser);
                 adminMenu();
             case 8://8 UPDATE USERS❤️
                 Printer.printAllUsers();
@@ -98,7 +98,7 @@ public class Menu {
             case 10://10 DELETE BOOK❤️
                 Printer.printAllBook();
                 Long idBook = (long) Util.getIntInput("Enter ID Book To Delete: ");
-                ApplicationContext.bookRepository.delete(idBook);
+                ApplicationContext.bookService.deleteBook(idBook);
                 adminMenu();
             case 11://11 UPDATE BOOK❤️
                 Printer.printAllBook();
@@ -131,7 +131,12 @@ public class Menu {
             case 16: //see all users address❤️
                 Printer.printAllUsersAddress();
                 adminMenu();
-            case 17://BACK TO LAST MENU❤️
+            case 17://see all book with same id❤️
+                Printer.printAllSubjects();
+                Long subjectsId = (long) Util.getIntInput("Enter Subjects ID To See All Book : ");
+                Printer.printAllBookWithSubjectsId(subjectsId);
+                adminMenu();
+            case 18 ://BACK TO LAST MENU❤️
                 startMenu();
             default:
                 System.out.println("Invalid Choice");

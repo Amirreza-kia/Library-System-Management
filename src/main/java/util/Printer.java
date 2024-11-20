@@ -99,4 +99,16 @@ public class Printer {
 
         }
     }
+    public static void printAllBookWithSubjectsId(Long id){
+        List<Book> books = ApplicationContext.subjectsService.findAllBookWithSubject(id);
+        String leftAlignFormat = "\u001B[34m" + "| %-4d |💀%-14s |️💀%-15s|💀%-15s|💀%-15s|%n";
+        System.out.format("\u001B[34m" + "+------+-----------------+-----------------+-----------------+-----------------+%n");
+        System.out.format("\u001B[34m" + "| ID   |      TITLE      |      AUTHOR     |     SUBJECT     |    SUBJECT-ID   |%n");
+        System.out.format("\u001B[34m" + "+------+-----------------+-----------------+-----------------+-----------------+%n");
+        for (Book book : books) {
+            System.out.format(leftAlignFormat,book.getId(),book.getTitle(),book.getAuthor(),book.getSubjects().getName(),book.getSubjects().getId());
+            System.out.format("\u001B[34m" + "+------+-----------------+-----------------+-----------------+-----------------+%n");
+        }
+    }
+
 }
